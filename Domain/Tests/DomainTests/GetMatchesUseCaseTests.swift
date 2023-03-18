@@ -33,8 +33,8 @@ final class GetMatchesUseCaseTests: XCTestCase {
     ]
 
     class MatchRepositoryMock: MatchRepositoryProtocol {
-        var cachedMatches: [Domain.Match] = []
-        var remoteMatches: [Domain.Match] = []
+        var cachedMatches: [Match] = []
+        var remoteMatches: [Match] = []
         var shouldFetchMatchesFail = false
         var shouldLoadCachedMatchesFail = false
         var shouldCacheMatchesFail = false
@@ -51,7 +51,7 @@ final class GetMatchesUseCaseTests: XCTestCase {
             }.eraseToAnyPublisher()
         }
 
-        func loadCachedMatches() -> AnyPublisher<[Domain.Match], Error> {
+        func loadCachedMatches() -> AnyPublisher<[Match], Error> {
             Deferred {
                 Future<[Match], Error> { future in
                     if self.shouldLoadCachedMatchesFail {
@@ -63,7 +63,7 @@ final class GetMatchesUseCaseTests: XCTestCase {
             }.eraseToAnyPublisher()
         }
         
-        func cacheMatches(matches: [Domain.Match]) {
+        func cacheMatches(matches: [Match]) {
             if !shouldCacheMatchesFail {
                 cachedMatches = matches
             }

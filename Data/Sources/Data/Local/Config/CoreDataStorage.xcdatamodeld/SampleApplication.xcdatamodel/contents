@@ -9,4 +9,9 @@
         <attribute name="matchDescription" optional="YES" attributeType="String"/>
         <attribute name="winner" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="CdTeamEntity" representedClassName="CdTeamEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="logo" optional="YES" attributeType="String"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
 </model>

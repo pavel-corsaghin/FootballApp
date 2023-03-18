@@ -21,7 +21,10 @@ extension ViewControllerFactory: AppModuleFactory {
     
     func makeTeamDetailViewController(teamName: String) -> TeamDetailViewController {
         let getTeamDetailUseCase = GetTeamDetailUseCase(teamRepository: TeamRepository())
-        let vm = TeamDetailViewModel(teamName: teamName, getTeamDetailUseCase: getTeamDetailUseCase)
+        let getMatchesUseCase = GetMatchesUseCase(matchRepository: MatchRepository())
+        let vm = TeamDetailViewModel(teamName: teamName,
+                                     getTeamDetailUseCase: getTeamDetailUseCase,
+                                     getMatchesUseCase: getMatchesUseCase)
         let vc = TeamDetailViewController(viewModel: vm)
         return vc
     }

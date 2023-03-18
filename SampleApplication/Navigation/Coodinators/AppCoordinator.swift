@@ -55,6 +55,10 @@ extension AppCoordinator: MatchesViewControllerDelegate {
 // MARK: - TeamDetailViewControllerDelegate
 
 extension AppCoordinator: TeamDetailViewControllerDelegate {
+    func teamDetailViewControllerDidViewTeamDetail(teamName: String) {
+        showTeamDetailVC(teamName: teamName)
+    }
+    
     func teamDetailViewControllerDidDismiss() {
         router.popModule()
     }

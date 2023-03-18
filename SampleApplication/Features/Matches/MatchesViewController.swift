@@ -7,7 +7,7 @@
 
 import AVKit
 import AVFoundation
-import Domain
+//import Domain
 import Combine
 import UIKit
 
@@ -21,19 +21,11 @@ final class MatchesViewController: BaseViewController, ViewControllable {
 
     typealias RootView = MatchesRootView
     typealias ViewModel = MatchesViewModel
-    typealias DataSource = UICollectionViewDiffableDataSource<SectionKind, CellKind>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<SectionKind, CellKind>
-
-    enum SectionKind {
-        case previous
-        case upcoming
-    }
-    enum CellKind: Hashable { case match(MatchCell.CellModel) }
     
     // MARK: - Properties
     
     weak var delegate: MatchesViewControllerDelegate?
-    private lazy var dataSource: DataSource = makeDataSource()
+    private lazy var dataSource: MatchDataSource = makeDataSource()
 
     // MARK: - Initializers
 
@@ -69,14 +61,19 @@ final class MatchesViewController: BaseViewController, ViewControllable {
             .debounce(for: .milliseconds(300), scheduler: mainQueue)
             .assign(to: \.searchKeyword, on: viewModel, ownership: .weak)
             .store(in: &cancellables)
+        
+        rootView.segmentControl.selectedSegmentIndexPublisher
+            .compactMap(MatchType.init)
+            .assign(to: \.selectedTab, on: viewModel, ownership: .weak)
+            .store(in: &cancellables)
     }
 
     override func setupViewModelOutputs() {
         super.setupViewModelOutputs()
         
-        viewModel.$searchedMatches
-            .compactMap { [weak self] in self?.generateSnapshot($0) }
+        viewModel.$snapshot
             .receive(on: mainQueue)
+            .compactMap { $0 }
             .sink { [weak self] in self?.dataSource.apply($0) }
             .store(in: &cancellables)
     }
@@ -100,9 +97,6 @@ extension MatchesViewController {
         rootView.collectionView.dataSource = dataSource
         rootView.collectionView.setCollectionViewLayout(createLayout(), animated: false)
         rootView.collectionView.register(cellWithClass: MatchCell.self)
-        rootView.collectionView.register(
-            supplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
-            withClass: SimpleCollectionViewHeader.self)
     }
     
     private func createLayout() -> UICollectionViewLayout {
@@ -113,24 +107,16 @@ extension MatchesViewController {
 
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(itemHeight))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-
-        let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(60))
-
-        let headerElement = NSCollectionLayoutBoundarySupplementaryItem(
-            layoutSize: headerSize,
-            elementKind: UICollectionView.elementKindSectionHeader,
-            alignment: .top)
         
         let section = NSCollectionLayoutSection(group: group)
-        section.boundarySupplementaryItems = [headerElement]
         section.interGroupSpacing = 20
         let layout = UICollectionViewCompositionalLayout(section: section)
 
         return layout
     }
 
-    private func makeDataSource() -> DataSource {
-        let dataSource = DataSource(collectionView: rootView.collectionView) { [unowned self] collectionView, indexPath, cellKind in
+    private func makeDataSource() -> MatchDataSource {
+        let dataSource = MatchDataSource(collectionView: rootView.collectionView) { [unowned self] collectionView, indexPath, cellKind in
             switch cellKind {
             case .match(let cellModel):
                 let cell = collectionView.dequeueReusableCell(withClass: MatchCell.self, for: indexPath)
@@ -151,31 +137,7 @@ extension MatchesViewController {
             }
         }
         
-        dataSource.supplementaryViewProvider = { collectionView, kind, indexPath in
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withClass: SimpleCollectionViewHeader.self, for: indexPath)
-            let section = dataSource.snapshot().sectionIdentifiers[indexPath.section]
-            header.configureCell(section.title)
-            return header
-        }
-
         return dataSource
-    }
-    
-    private func generateSnapshot(_ matches: [Match]) -> Snapshot {
-        var snapshot = Snapshot()
-        let cellModels = matches.map(MatchCell.CellModel.init)
-        let previousCellModels = cellModels.filter { $0.type == .previous }
-        if !previousCellModels.isEmpty {
-            snapshot.appendSections([.previous])
-            snapshot.appendItems(previousCellModels.map { .match($0) })
-        }
-        let upcomingCellModels = cellModels.filter { $0.type == .upcoming }
-        if !upcomingCellModels.isEmpty {
-            snapshot.appendSections([.upcoming])
-            snapshot.appendItems(upcomingCellModels.map { .match($0) })
-        }
-        
-        return snapshot
     }
     
     private func viewHighlights(_ url: String?) {
@@ -193,13 +155,3 @@ extension MatchesViewController {
     }
 }
 
-extension MatchesViewController.SectionKind {
-    var title: String {
-        switch self {
-        case .previous:
-            return "Previous"
-        case .upcoming:
-            return "Upcoming"
-        }
-    }
-}

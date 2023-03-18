@@ -12,18 +12,27 @@ import Domain
 public class TeamRepository {
 
     private let service: TeamServiceProtocol
+    private let storage: TeamStorageProtocol
 
-    public init(service: TeamServiceProtocol? = nil) {
+    public init(
+        service: TeamServiceProtocol? = nil,
+        storage: TeamStorageProtocol? = nil
+    ) {
         self.service = service ?? TeamService()
+        self.storage = storage ?? TeamStorage()
     }
 }
 
 extension TeamRepository: TeamRepositoryProtocol {
-    public func getTeam(id: String) -> AnyPublisher<Domain.Team, Error> {
-        fatalError("Not implemented yet")
+    public func fetchTeams() -> AnyPublisher<[Team], Error> {
+        service.getTeams()
     }
     
-    public func getTeams() -> AnyPublisher<[Team], Error> {
-        service.getTeams()
+    public func loadCachedTeams() -> AnyPublisher<[Team], Error> {
+        storage.loadCachedTeams()
+    }
+    
+    public func cacheTeams(teams: [Team]) {
+        storage.cacheMatches(teams: teams)
     }
 }

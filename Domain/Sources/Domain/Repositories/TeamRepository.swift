@@ -9,6 +9,12 @@ import Foundation
 import Combine
 
 public protocol TeamRepositoryProtocol {
-    func getTeams() -> AnyPublisher<[Team], Error>
-    func getTeam(id: String) -> AnyPublisher<Team, Error>
+    /// Fetch teams  from remote
+    func fetchTeams() -> AnyPublisher<[Team], Error>
+    
+    /// Load cached matches from storage
+    func loadCachedTeams() -> AnyPublisher<[Team], Error>
+    
+    /// Cache  matches to store
+    func cacheTeams(teams: [Team])
 }

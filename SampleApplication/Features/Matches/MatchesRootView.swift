@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+
 final class MatchesRootView: BaseView {
 
     // MARK: - Subviews
@@ -14,6 +16,7 @@ final class MatchesRootView: BaseView {
     private(set) var navBar: NavigationBar!
     private(set) var searchInputView: SearchInputView!
     private(set) var collectionView: UICollectionView!
+    private(set) var segmentControl: UISegmentedControl!
     
     // MARK: - Setup
     
@@ -29,10 +32,13 @@ final class MatchesRootView: BaseView {
         
         searchInputView = SearchInputView()
         
+        segmentControl = UISegmentedControl(items: MatchType.allCases.map { $0.title }).also {
+            $0.selectedSegmentIndex = 0
+        }
+        
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout()).also {
             $0.backgroundColor = .clear
             $0.contentInset = .init(top: 10, left: 0, bottom: 10, right: 0)
-            $0.keyboardDismissMode = .interactive
         }
     }
 
@@ -43,16 +49,22 @@ final class MatchesRootView: BaseView {
             $0.bottom.equalTo(safeAreaLayoutGuide.snp.top).offset(48)
         }
         
+        addSubview(segmentControl)
+        segmentControl.snp.makeConstraints {
+            $0.top.equalTo(navBar.snp.bottom).offset(16)
+            $0.centerX.equalToSuperview()
+        }
+        
         addSubview(searchInputView)
         searchInputView.snp.makeConstraints {
-            $0.top.equalTo(navBar.snp.bottom).offset(16)
+            $0.top.equalTo(segmentControl.snp.bottom).offset(16)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.height.equalTo(50)
         }
         
         addSubview(collectionView)
         collectionView.snp.makeConstraints {
-            $0.top.equalTo(searchInputView.snp.bottom)
+            $0.top.equalTo(searchInputView.snp.bottom).offset(4)
             $0.leading.trailing.equalToSuperview().inset(20)
             $0.bottom.equalTo(safeAreaLayoutGuide)
         }

@@ -17,6 +17,6 @@ final class MatchesViewModelTest: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    // TODO: Write test cases
+    // TODO: Write test cases (Currently we only have sample unit test for GetMatchesUseCase in Domain layer)
 
 }

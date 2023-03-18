@@ -57,6 +57,8 @@
 		CEC1CEC529C23D990057A749 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = CEC1CEC429C23D990057A749 /* Data */; };
 		CEC1CEC829C252200057A749 /* MatchesViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1CEC729C252200057A749 /* MatchesViewModelTest.swift */; };
 		CEC1CECA29C2B93D0057A749 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1CEC929C2B93D0057A749 /* String+Extensions.swift */; };
+		CEC1CF2D29C60EB90057A749 /* MatchType.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1CF2C29C60EB90057A749 /* MatchType.swift */; };
+		CEC1CF3029C619B30057A749 /* MatchDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1CF2F29C619B30057A749 /* MatchDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,6 +120,8 @@
 		CEC1CEC329C234B80057A749 /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Data; sourceTree = "<group>"; };
 		CEC1CEC729C252200057A749 /* MatchesViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesViewModelTest.swift; sourceTree = "<group>"; };
 		CEC1CEC929C2B93D0057A749 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
+		CEC1CF2C29C60EB90057A749 /* MatchType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchType.swift; sourceTree = "<group>"; };
+		CEC1CF2F29C619B30057A749 /* MatchDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,9 +320,8 @@
 		CE050DFE29BF7A8C0008BF9C /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				CE744F1D29C231A100495990 /* Data */,
-				CE744ED629C167A000495990 /* TeamDetail */,
 				CE050DFF29BF7B030008BF9C /* Matches */,
+				CE744ED629C167A000495990 /* TeamDetail */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 		CE050DFF29BF7B030008BF9C /* Matches */ = {
 			isa = PBXGroup;
 			children = (
+				CEC1CF2E29C619460057A749 /* Models */,
 				CE050E0129BF7C2F0008BF9C /* MatchesViewController.swift */,
 				CE050E0229BF7C2F0008BF9C /* MatchesViewModel.swift */,
 				CE050E0329BF7C2F0008BF9C /* MatchesRootView.swift */,
@@ -378,19 +382,21 @@
 			name = Packages;
 			sourceTree = "<group>";
 		};
-		CE744F1D29C231A100495990 /* Data */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Data;
-			sourceTree = "<group>";
-		};
 		CEC1CEC629C251430057A749 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
 				CEC1CEC729C252200057A749 /* MatchesViewModelTest.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		CEC1CF2E29C619460057A749 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				CEC1CF2C29C60EB90057A749 /* MatchType.swift */,
+				CEC1CF2F29C619B30057A749 /* MatchDataSource.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -540,8 +546,10 @@
 				CE744ED129C15FBC00495990 /* ImageCache.swift in Sources */,
 				CE050DC429BED5BE0008BF9C /* ScopeFunction.swift in Sources */,
 				CE050DF329BF75AD0008BF9C /* CoordinatorFactoryProtocol.swift in Sources */,
+				CEC1CF2D29C60EB90057A749 /* MatchType.swift in Sources */,
 				CE744EEA29C18D3700495990 /* SearchInputView.swift in Sources */,
 				CE050DBD29BED29A0008BF9C /* BaseViewController.swift in Sources */,
+				CEC1CF3029C619B30057A749 /* MatchDataSource.swift in Sources */,
 				CE744EC029C0CFB700495990 /* BaseCollectionViewCell.swift in Sources */,
 				CEC1CECA29C2B93D0057A749 /* String+Extensions.swift in Sources */,
 				CE744ECA29C0F03800495990 /* Date+Extensions.swift in Sources */,

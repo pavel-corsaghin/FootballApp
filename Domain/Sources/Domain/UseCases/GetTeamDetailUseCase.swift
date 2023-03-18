@@ -20,8 +20,18 @@ public struct GetTeamDetailUseCase: GetTeamDetailUseCaseProtocol {
     }
     
     public func execute(teamName: String) -> AnyPublisher<Team?, Error> {
-        teamRepository.getTeams()
-            .map { $0.first { $0.name == teamName }}
-            .eraseToAnyPublisher()
+        Publishers.Concatenate(
+            prefix: teamRepository.loadCachedTeams()
+                .catch { _ -> AnyPublisher<[Team], Error> in
+                    // Ignore error from loading local teams
+                    Result.Publisher(.success([])).eraseToAnyPublisher()
+                },
+            suffix: teamRepository.fetchTeams()
+                .handleEvents(receiveOutput: {
+                    teamRepository.cacheTeams(teams: $0)
+                })
+        )
+        .map { $0.first { $0.name == teamName }}
+        .eraseToAnyPublisher()
     }
 }

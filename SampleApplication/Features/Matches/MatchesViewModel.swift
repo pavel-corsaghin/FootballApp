@@ -16,9 +16,10 @@ final class MatchesViewModel: BaseViewModel {
     
     private let getMatchesUseCase: GetMatchesUseCaseProtocol
     @Published private var originalMatches: [Match] = []
-    @Published private(set) var searchedMatches: [Match] = []
+    @Published private(set) var snapshot: MatchSnapshot?
+    @Published var selectedTab: MatchType = .previous
     @Published var searchKeyword: String?
-    
+
     // MARK: - Initializer
     
     init(getMatchesUseCase: GetMatchesUseCaseProtocol) {
@@ -29,31 +30,49 @@ final class MatchesViewModel: BaseViewModel {
     }
     
     override func setupBindings() {
-        Publishers.CombineLatest(
+        Publishers.CombineLatest3(
             $originalMatches,
+            $selectedTab,
             $searchKeyword
                 .replaceNil(with: "")
                 .map { $0.lowercased() }
                 .removeDuplicates()
         )
         .receive(on: backgroundQueue)
-        .map { matches, keyword in
-            if keyword.isEmpty {
-                return matches
+        .compactMap { [weak self] in self?.generateFilteredMatches($0, $1, $2) }
+        .map { [weak self] in self?.generateSnapshot($0)}
+        .assign(to: \.snapshot, on: self, ownership: .weak)
+        .store(in: &cancellables)
+    }
+    
+    private func generateFilteredMatches(_ matches: [Match],
+                                         _ selectedTab: MatchType,
+                                         _ keyword: String) -> [Match] {
+        // Filter by type
+        let matchesByType = matches.filter { $0.type == selectedTab }
+        
+        // Filter by searching keyword
+        guard !keyword.isEmpty else {
+            return matchesByType
+        }
+        
+        return matchesByType.filter { match in
+            guard let home = match.home?.lowercased(),
+                  let away = match.away?.lowercased()
+            else {
+                return false
             }
             
-            return matches.filter { match in
-                guard let home = match.home?.lowercased(),
-                      let away = match.away?.lowercased()
-                else {
-                    return false
-                }
-                
-                return home.contains(keyword) || away.contains(keyword)
-            }
+            return home.contains(keyword) || away.contains(keyword)
         }
-        .assign(to: \.searchedMatches, on: self, ownership: .weak)
-        .store(in: &cancellables)
+    }
+    
+    private func generateSnapshot(_ matches: [Match]) -> MatchSnapshot {
+        var snapshot = MatchSnapshot()
+        let cellModels = matches.map(MatchCell.CellModel.init)
+        snapshot.appendSections([.main])
+        snapshot.appendItems(cellModels.map { .match($0) })
+        return snapshot
     }
     
     // MARK: - Actions
@@ -74,23 +93,14 @@ final class MatchesViewModel: BaseViewModel {
                     }
                     self.isLoading = false
                 },
-                receiveValue: { [weak self] matches in
-                    guard let self = self else {
-                        return
-                    }
-                    
-                    self.isLoading = false
-                    self.originalMatches = matches.sorted(by: { lhs, rhs in
-                        guard let lhsDate = lhs.date?.toDate(),
-                              let rhsDate = rhs.date?.toDate()
-                        else {
-                            return true
-                        }
-                        
-                        return lhsDate > rhsDate
-                    })
-                }
+                receiveValue: { [weak self] in self?.originalMatches = $0 }
             )
             .store(in: &cancellables)
+    }
+}
+
+extension Match {
+    var type: MatchType {
+       return winner != nil ? .previous : .upcoming
     }
 }

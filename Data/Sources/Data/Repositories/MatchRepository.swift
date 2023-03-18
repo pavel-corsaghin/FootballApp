@@ -24,15 +24,15 @@ public class MatchRepository {
 }
 
 extension MatchRepository: MatchRepositoryProtocol {
-    public func fetchMatches() -> AnyPublisher<[Domain.Match], Error> {
+    public func fetchMatches() -> AnyPublisher<[Match], Error> {
         service.fetchMatches()
     }
     
-    public func loadCachedMatches() -> AnyPublisher<[Domain.Match], Error> {
+    public func loadCachedMatches() -> AnyPublisher<[Match], Error> {
         storage.loadCachedMatches()
     }
     
-    public func cacheMatches(matches: [Domain.Match]) {
+    public func cacheMatches(matches: [Match]) {
         storage.cacheMatches(matches: matches)
     }
 }

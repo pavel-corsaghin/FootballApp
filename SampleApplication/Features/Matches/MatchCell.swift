@@ -18,7 +18,7 @@ final class MatchCell: BaseCollectionViewCell {
     private(set) var viewHighlightsButton: UIButton!
     private var winCheckImageView: UIImageView!
     
-    // MARK: - Setup
+    // MARK: - Setups
     
     override func setupCell() {
         backgroundColor = .white
@@ -110,10 +110,6 @@ final class MatchCell: BaseCollectionViewCell {
 }
 
 extension MatchCell {
-    enum MatchType {
-        case previous
-        case upcoming
-    }
     
     struct CellModel: Hashable {
         let date: String?
@@ -131,7 +127,7 @@ extension MatchCell {
             away = entity.away
             winner = entity.winner
             highlights = entity.highlights
-            type = entity.winner != nil ? .previous : .upcoming
+            type = entity.type
         }
     }
 }
