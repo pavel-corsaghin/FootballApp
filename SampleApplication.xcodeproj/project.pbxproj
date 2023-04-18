@@ -54,6 +54,7 @@
 		CE744F0929C1AACF00495990 /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = CE744F0829C1AACF00495990 /* CombineExt */; };
 		CE744F0B29C1AACF00495990 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = CE744F0A29C1AACF00495990 /* CombineCocoa */; };
 		CE744F1A29C2315A00495990 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = CE744F1929C2315A00495990 /* Domain */; };
+		CE9C9F8429CD582F00722B4A /* MockError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE9C9F8329CD582F00722B4A /* MockError.swift */; };
 		CEC1CEC529C23D990057A749 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = CEC1CEC429C23D990057A749 /* Data */; };
 		CEC1CEC829C252200057A749 /* MatchesViewModelTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1CEC729C252200057A749 /* MatchesViewModelTest.swift */; };
 		CEC1CECA29C2B93D0057A749 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEC1CEC929C2B93D0057A749 /* String+Extensions.swift */; };
@@ -117,6 +118,7 @@
 		CE744EEF29C19E7300495990 /* SampleApplicationTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SampleApplicationTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE744F0629C1AA4200495990 /* Combine.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Combine.framework; path = System/Library/Frameworks/Combine.framework; sourceTree = SDKROOT; };
 		CE744F0D29C2131400495990 /* Domain */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Domain; sourceTree = "<group>"; };
+		CE9C9F8329CD582F00722B4A /* MockError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockError.swift; sourceTree = "<group>"; };
 		CEC1CEC329C234B80057A749 /* Data */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = Data; sourceTree = "<group>"; };
 		CEC1CEC729C252200057A749 /* MatchesViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesViewModelTest.swift; sourceTree = "<group>"; };
 		CEC1CEC929C2B93D0057A749 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
@@ -360,6 +362,7 @@
 		CE744EF029C19E7300495990 /* SampleApplicationTests */ = {
 			isa = PBXGroup;
 			children = (
+				CE9C9F8229CD581400722B4A /* Helpers */,
 				CEC1CEC629C251430057A749 /* ViewModels */,
 			);
 			path = SampleApplicationTests;
@@ -380,6 +383,14 @@
 				CEC1CEC329C234B80057A749 /* Data */,
 			);
 			name = Packages;
+			sourceTree = "<group>";
+		};
+		CE9C9F8229CD581400722B4A /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				CE9C9F8329CD582F00722B4A /* MockError.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 		CEC1CEC629C251430057A749 /* ViewModels */ = {
@@ -564,6 +575,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE9C9F8429CD582F00722B4A /* MockError.swift in Sources */,
 				CEC1CEC829C252200057A749 /* MatchesViewModelTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

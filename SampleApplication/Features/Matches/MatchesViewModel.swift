@@ -25,8 +25,6 @@ final class MatchesViewModel: BaseViewModel {
     init(getMatchesUseCase: GetMatchesUseCaseProtocol) {
         self.getMatchesUseCase = getMatchesUseCase
         super.init()
-        
-        getMatches()
     }
     
     override func setupBindings() {

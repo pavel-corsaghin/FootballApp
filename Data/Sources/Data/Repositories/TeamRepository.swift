@@ -33,6 +33,6 @@ extension TeamRepository: TeamRepositoryProtocol {
     }
     
     public func cacheTeams(teams: [Team]) {
-        storage.cacheMatches(teams: teams)
+        storage.cacheTeams(teams: teams)
     }
 }

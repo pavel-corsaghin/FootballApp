@@ -147,5 +147,4 @@ extension URLRequest {
 
         return command.joined(separator: " \\\n\t")
     }
-
 }
